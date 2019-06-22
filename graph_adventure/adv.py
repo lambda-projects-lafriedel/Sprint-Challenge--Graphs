@@ -21,7 +21,10 @@ player = Player("Name", world.startingRoom)
 
 # player's graph of rooms and their directions
 graph = dict()
+# path to travel
 traversalPath = []
+# reverse path of travel
+reversePath = []
 
 # populates player's graph with exit directions and instantiates them with a '?' since they are unexplored
 def populate_graph_with_exits(room):
@@ -34,11 +37,54 @@ def get_opposite(direction):
     dirdict = {'n': 's', 's': 'n', 'w': 'e', 'e': 'w'}
     return dirdict.get(direction)
 
-# function that does the actual traveling and generates traversal path
-def explore(starting_room):
+def bfs(room):
     pass
+    # travel backwards -- save a path back inside function
+    # for each move in the global reversed travel path
+        # have the player travel in the opposite direction
+        # add the direction to the path inside function
+        # check if that room has an unexplored exit
+        # if it does, add the list of opposite directions saved inside function to the traversal path
+        # break out of loop
+    # do i need to return anything?
+    # should i clear the globally reversed path?
 
-    
+def dfs(room, exits):
+    pass
+    # create stack
+    # while len of stack is > 0
+    # we do not need to explore all the exits at once, so only search one of the directions
+    # so maybe if not while the queue is greater than 0
+        # travel in that direction
+        # add that direction to the traversalPath
+        # if the new current room is not in the player's graph
+            # generate its exits and add it to the player's graph
+            # save the direction traveled in the graph
+            # save the opposite direction traveled in the graph so we know the rooms are connected
+        # else
+            # just save the room as a value for the previous room's direction key
+    # do i need to return anything?
+
+
+
+
+# function that does the actual traveling and generates traversal path
+def explore():
+    pass
+    # 
+    # while len(graph) is not len(roomGraph):
+        # if player.currentRoom.id not in graph:
+            # populate_graph_with_exits(player.currentRoom)
+        # get exits from player's current room
+
+        # if the rooms's exits contain a '?' as their value
+            # call dfs and explore // dfs(player.currentRoom, exits)
+        # else
+            # use bfs to travel back to the first room with an unexplored exit
+            
+        
+
+
 # TRAVERSAL TEST
 visited_rooms = set()
 player.currentRoom = world.startingRoom
