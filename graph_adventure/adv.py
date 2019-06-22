@@ -25,6 +25,7 @@ graph = dict()
 traversalPath = []
 # reverse path of travel
 reversePath = []
+# set of visited rooms
 visited_rooms = set()
 
 # populates player's graph with exit directions and instantiates them with a '?' since they are unexplored
@@ -47,21 +48,21 @@ def bfs(room):
     # travPath [n,n]
     # revPath [s,s]
     # so to travel back I need to reverse the reversed path
-    #reversePath.reverse() # reverses in place so I'll need to clear it when I'm done [s,s]
     # for each move in the global reversed travel path
-    print("REV PATH", reversePath)
+    #print("REV PATH", reversePath)
     for move in reversePath[::-1]:
          # have the player travel in the opposite direction
         player.travel(move)
-        traversalPath.append(move)
         # add the direction to the path inside function
+        traversalPath.append(move)
+        # remove the last item in reversePath so it keeps up with player
+        reversePath.pop(-1)
         # check if that room has an unexplored exit
-        reversePath.pop(0)
         # if it does, add the list of opposite directions saved inside function to the traversal path
         if '?' in graph[player.currentRoom.id].values():
             #print("TRAV PATH AT END OF BFS", player.currentRoom.id, traversalPath)
             #reversePath.clear()
-            print("GRAPH AT END OF BFS", graph)
+            #print("GRAPH AT END OF BFS", graph)
             return
 
 def dfs(room, directions):
@@ -96,7 +97,7 @@ def dfs(room, directions):
 while len(graph) < len(roomGraph):
     # if player.currentRoom.id not in graph:
     if player.currentRoom.id not in graph:
-        # populate_graph_with_exits(player.currentRoom)
+        # populate graph with it and its exits
         populate_graph_with_exits(player.currentRoom)
     
     unexplored_exits = []
@@ -113,9 +114,10 @@ while len(graph) < len(roomGraph):
     # else
     else:
         if len(reversePath) > 0:
-        # use bfs to travel back to the first room with an unexplored exit
+        # if there's still diections in the reverse path, use bfs to travel back to the first room with an unexplored exit
             bfs(player.currentRoom)
         else:
+            # else pick a random exit from current room and explore
             exits = player.currentRoom.getExits()
             choice = random.choice(exits)
             player.travel(choice)
@@ -125,12 +127,10 @@ while len(graph) < len(roomGraph):
 
 
 # TRAVERSAL TEST
-# visited_rooms = set()
 player.currentRoom = world.startingRoom
 visited_rooms.add(player.currentRoom) # 1
 
-# call explore to explore
-print(traversalPath)
+#print(traversalPath)
 
 for move in traversalPath:
     player.travel(move)
